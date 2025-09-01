@@ -1,15 +1,7 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Sat Feb  1 11:36:20 2025
-
-@author: zrobi
-"""
 
 # -*- coding: utf-8 -*-
 """
 Created on Thu Jan 30 15:55:17 2025
-
-@author: zrobi
 """
 from PIL import Image
 import math
