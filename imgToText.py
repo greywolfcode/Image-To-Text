@@ -1,10 +1,12 @@
-
 # -*- coding: utf-8 -*-
 """
 Created on Thu Jan 30 15:55:17 2025
 """
-from PIL import Image
+#import standerd libraries
 import math
+import argparse
+#import 3rd party libraries
+from PIL import Image
 import docx 
 from docx.shared import RGBColor
 #functions to load text/imgs
@@ -117,26 +119,22 @@ def create_document(text_array, word_doc_save_path):
     #save docx file
     doc.save(word_doc_save_path)
 
-def run(photo_path, text_path, use_text_path, word_doc_save_path):
+def run(photo_path, text_path, word_doc_save_path):
     #load photo
     photos = load_photo(photo_path)
     #get text/load txt file
-    if use_text_path:
-        text = load_text(text_path)
-    else:
-        text = text_path
+    text = load_text(text_path)
     #create array of lines, charachters, and colours
     text_array = convert_img_to_text(text, photos[0])
     #create & save word document using array created above
     create_document(text_array, word_doc_save_path)
 
-#hilight string including quotes if you copied as path
-photo_path = r"C:\Users\zrobi\Documents\Python Scripts\Text_to_Img\KJV.png"
-#if you want to use this as a path, make it look the same as photo path
-text_path = '################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################'
-text_path = r'C:/Users/zrobi/Documents/python scripts/text_to_img/kjv.txt'
-#this should be fal;se if you are pasting in the text you want to use
-use_text_path_as_path = True
-word_doc_save_path = 'KJV.docx'
-run(photo_path, text_path, use_text_path_as_path, word_doc_save_path)
+#set up argparse parameters
+parser = argparse.ArgumentParser(prog='channelCSonverter', description='Swap colour channels of photos in the command line')
+parser.add_argument('imagePath', help='path to image file') 
+parser.add_argument('textPath', help='path to text document') 
+parser.add_argument('outputPath', help='path to output word document to')
+#get arguments
+args = parser.parse_args()
+run(args.imagePath, args.textPath, args.outputPath)
 print('Done!')
