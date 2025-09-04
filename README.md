@@ -16,4 +16,4 @@ The textPath should be a .txt file
 Note that the more text there is, the longer it will take to finish the conversion
 
 ## Dependencies
--[python-docx](https://github.com/python-openxml/python-docx)
+[python-docx](https://github.com/python-openxml/python-docx)
