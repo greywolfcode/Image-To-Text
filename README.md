@@ -13,4 +13,7 @@ The textPath should be a .txt file
 -t, --truncate truncates the text if it is larger then the image
 
 
-Note that the more text there is, the longer it will take to finish teh conversion
+Note that the more text there is, the longer it will take to finish the conversion
+
+## Dependencies
+-[python-docx](https://github.com/python-openxml/python-docx)
