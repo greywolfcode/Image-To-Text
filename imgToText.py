@@ -31,24 +31,34 @@ def load_text(path):
 def split_string(string, x):
   """Splits a string into multiple strings of length x."""
   return [string[i:i + x] for i in range(0, len(string), x)]
-def convert_img_to_text(text, image):
+def convert_img_to_text(text, image, truncate, repeat):
     photo = image
     text_string = text
     #get img size & calculate area
     width, height = photo.size
     photo_area = width * height
+    #handle repeat flag
+    if repeat == True:
+        while len(text_string) < photo_area:
+            text_string += text_string
+    #handle truncate flag
+    if truncate == True:
+        print('Applying Truncation...')
+        if len(text_string) > photo_area:
+            difference = len(text_string) - photo_area
+            text_string = text_string[:-difference]
     #get length of text
     text_length = len(text_string)
     #get ratio of the side lengths
     size_ratio = width / height
-    #set up array fro text
+    #set up array for text
     text_array = []
     #find the side lengths of rectangle based on the side lengths ratio and area
     x = math.sqrt((text_length /  size_ratio))
     #change which will be bigger based on landscape or portrio
     text_width = round(size_ratio * x)
     text_height = round(x)
-    #split the string into multiple strigns the length of the text width
+    #split the string into multiple strings the length of the text width
     text_array = split_string(text_string, text_width)
     #split each width into multiple lists with 1 charachter each
     for num in range(0, len(text_array)):
@@ -57,7 +67,9 @@ def convert_img_to_text(text, image):
     #find ratio of areas
     area_ratio = text_length / photo_area
     #find pixel values for each charachter
+    print('Colouring Text...')
     if area_ratio > 1:
+        #where there are more charachters then pixels
         #scale image
         scaled_image  = photo.resize((text_width, text_height))
         #move through each row of the text list
@@ -65,8 +77,11 @@ def convert_img_to_text(text, image):
             #move through each charachter in the row
             for x in range(0, text_width):
                 #get photo rgb for that corrdinent and append to the charchter list 
-                rgb_value = scaled_image.getpixel((x, y))
-                text_array[y][x].append(rgb_value)
+                try:
+                    rgb_value = scaled_image.getpixel((x, y))
+                    text_array[y][x].append(rgb_value)
+                except:
+                    break
     elif area_ratio == 1:
         #when there are the same number of charachters and pixels
         #move through each row of the text list
@@ -84,7 +99,7 @@ def convert_img_to_text(text, image):
         for y in range(0, text_height):
             #move through each charachter in the row
             for x in range(0, text_width):
-                #get photo rgb for that corrdinent and append to the charchter list 
+                #get photo rgb for that coordinent and append to the charchter list 
                 rgb_value = scaled_image.getpixel((x, y))
                 if rgb_value == (255, 255, 255, 255):
                     rgb_value = (250, 250, 250, 255)
@@ -96,13 +111,17 @@ def convert_img_to_text(text, image):
 #function to create the word document
 def create_document(text_array, word_doc_save_path):
     #create document
+    print('Creating Document...')
     doc = docx.Document() 
     #add paragraph to document
     para = doc.add_paragraph()
-    for list in text_array:
+    num_lines = len(text_array)
+    for line, list in enumerate(text_array):
         #move to a new line to keep img intact
         para.add_run('\n')
-        for charachter in list:
+        num_chars = len(list)
+        for char_num, charachter in enumerate(list):
+            print(f'char {char_num}/{num_chars}, line {line}/{num_lines}')
             #iterate through charachters in a line
             if len(charachter) == 2:
                 #select colour for chrahcter
@@ -117,15 +136,18 @@ def create_document(text_array, word_doc_save_path):
             #change chrachter colour to be the loaded colour
             run.font.color.rgb = colour
     #save docx file
+    print('Saving File...')
     doc.save(word_doc_save_path)
 
-def run(photo_path, text_path, word_doc_save_path):
+def run(photo_path, text_path, word_doc_save_path, truncate, repeat):
     #load photo
+    print('Loading Image...')
     photos = load_photo(photo_path)
     #get text/load txt file
+    print('Loading Text...')
     text = load_text(text_path)
     #create array of lines, charachters, and colours
-    text_array = convert_img_to_text(text, photos[0])
+    text_array = convert_img_to_text(text, photos[0], truncate, repeat)
     #create & save word document using array created above
     create_document(text_array, word_doc_save_path)
 
@@ -134,7 +156,9 @@ parser = argparse.ArgumentParser(prog='channelCSonverter', description='Swap col
 parser.add_argument('imagePath', help='path to image file') 
 parser.add_argument('textPath', help='path to text document') 
 parser.add_argument('outputPath', help='path to output word document to')
+parser.add_argument('-t', '--truncate', action='store_true', help='truncate text if the image is larger')
+parser.add_argument('-r', '--repeat', action='store_true', help='repeat text until it is the size of the image')
 #get arguments
 args = parser.parse_args()
-run(args.imagePath, args.textPath, args.outputPath)
+run(args.imagePath, args.textPath, args.outputPath, args.truncate, args.repeat)
 print('Done!')
