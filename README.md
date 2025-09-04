@@ -1,5 +1,5 @@
 # Image-To-Text
-Makes a word document where the font colours match an image's pixels
+Makes a word document where the font colours match an image's pixels.
 
 ## Usage
 ```
@@ -10,10 +10,12 @@ The textPath should be a .txt file
 
 -r, --repeat makes repeats the text until it is the size of or bigger than the image.
 
--t, --truncate truncates the text if it is larger then the image
+-t, --truncate truncates the text if it is larger then the image.
 
 
-Note that the more text there is, the longer it will take to finish the conversion
+Note that the more text there is, the longer it will take to finish the conversion.
+
+The output document will probably not look right, as the normal text size is often too large.
 
 ## Dependencies
 [python-docx](https://github.com/python-openxml/python-docx)
