@@ -15,7 +15,7 @@ The textPath should be a .txt file
 
 Note that the more text there is, the longer it will take to finish the conversion.
 
-The output document will probably not look right, as the normal text size is often too large.
+The output document will probably not look right, as the normal text size is often too large. Shrinking the text size should fix it.
 
 ## Dependencies
 [python-docx](https://github.com/python-openxml/python-docx)
