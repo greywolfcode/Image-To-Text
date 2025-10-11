@@ -152,7 +152,7 @@ def run(photo_path, text_path, word_doc_save_path, truncate, repeat):
     create_document(text_array, word_doc_save_path)
 
 #set up argparse parameters
-parser = argparse.ArgumentParser(prog='channelCSonverter', description='Swap colour channels of photos in the command line')
+parser = argparse.ArgumentParser(prog='imgToText', description='Convert images to word document')
 parser.add_argument('imagePath', help='path to image file') 
 parser.add_argument('textPath', help='path to text document') 
 parser.add_argument('outputPath', help='path to output word document to')
