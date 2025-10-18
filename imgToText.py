@@ -22,9 +22,8 @@ def load_text(path):
     else:
         new_path = path
     try:
-        file = open(new_path, 'r')
-        text = file.read()
-        file.close
+        with open(new_path, 'r') as file:
+            text = file.read()
         return text
     except:
         return 'error'
