@@ -18,4 +18,5 @@ Note that the more text there is, the longer it will take to finish the conversi
 The output document will probably not look right, as the normal text size is often too large. Shrinking the text size should fix it.
 
 ## Dependencies
-[python-docx](https://github.com/python-openxml/python-docx)
+- [Pillow](https://github.com/python-pillow/Pillow)
+- [python-docx](https://github.com/python-openxml/python-docx)
